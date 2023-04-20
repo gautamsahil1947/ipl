@@ -17,6 +17,7 @@ void view_players(team *, int);
 void add_team(team *);
 void remove_team(team *, int);
 void make_fixture(team *);
+void change_player(team *);
 
 int main(void) {
         // open the file
@@ -47,6 +48,7 @@ int main(void) {
                 printf("3 to add a team\n");
                 printf("4 to remove a team\n");
                 printf("5 to make fixtures\n");
+                printf("6 to replace a player\n");
 
                 int n;
                 printf("enter n: ");
@@ -65,6 +67,8 @@ int main(void) {
                         remove_team(array, numberOfTeams);
                 } else if (n == 5) {
                         make_fixture(array);
+                } else if (n == 6) {
+                        change_player(array);
                 } else {
                         printf("invalid input\n");
                 }
@@ -73,6 +77,32 @@ int main(void) {
 
         }
         
+}
+
+void change_player(team *array) {
+        char buffer[30];
+        printf("enter team name: ");
+        scanf("%s", buffer);
+
+        for (int i = 0; i < numberOfTeams; i++) {
+                if (!strcmp(array[i].teamName, buffer) && array[i].flag != 0) {
+                        char player[30];
+                        char *replacement = malloc(sizeof(char[30]));
+                        printf("enter player's name and replacement name: ");
+                        scanf("%s %s", player, replacement);
+
+                        for (int j = 0; j < 11; j++) {
+                                if (!strcmp(player, array[i].playerList[j])) {
+                                        array[i].playerList[j] = replacement;
+                                        return;
+                                }
+                        }
+                        printf("player not found\n");
+                }
+        }
+        printf("team not found\n");
+
+
 }
 
 void make_fixture(team *array) {
